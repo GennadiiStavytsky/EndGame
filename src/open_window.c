@@ -51,9 +51,10 @@ int main(int argc, char* argv[]) {
                     || (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))
                     running = 0;
                 if (SDL_MOUSEBUTTONDOWN == event.type)
-                    running = 2;
-            }
-
+                    running = 2;  
+            
+                }
+            
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
             SDL_RenderCopy(renderer, menu_image, NULL, NULL);
@@ -66,16 +67,19 @@ int main(int argc, char* argv[]) {
             while (SDL_PollEvent(&event)) {
                 if ((SDL_QUIT == event.type)
                     || (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))
-                    running = 0;
+                    running = 3;
                 if (SDL_MOUSEMOTION == event.type) {
                     SDL_GetMouseState(&x, &y);
+                     running = 0;
                 }
             }
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
             SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-
+        
+        
+            
             // RENDER
             SDL_RenderCopy(renderer, bg, NULL, NULL);
             SDL_Rect box = {x_c - (200 / 2), y_c - (200 / 2), 200, 200};
