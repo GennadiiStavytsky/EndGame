@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
     (void)argv;
 
     SDL_Init(SDL_INIT_EVERYTHING);
-    IMG_Init(IMG_INIT_PNG);
+    IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 
     SDL_Window *window = SDL_CreateWindow(
         "Our Game !",
@@ -31,35 +31,69 @@ int main(int argc, char* argv[]) {
     int x_c = 1024 / 2;
     int y_c = 768 / 2;
 
-    int x = 0;
-    int y = 0;
+    int x = 500;
+    int y = 500;
+
+    SDL_Texture *menu_image = IMG_LoadTexture(renderer, "menu_image.png");
 
     SDL_Texture *image = IMG_LoadTexture(renderer, "sample.png");
+    SDL_Texture *bg = IMG_LoadTexture(renderer, "background.png" );
+    SDL_Texture *sh = IMG_LoadTexture(renderer, "shilde.png" );
+
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
 
     while (running) {
-        while (SDL_PollEvent(&event)) {
-            if ((SDL_QUIT == event.type)
-                || (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))
-                running = 0;
-            if (SDL_MOUSEMOTION == event.type) {
-                SDL_GetMouseState(&x, &y);
+
+        if (running == 1) {
+
+            while (SDL_PollEvent(&event)) {
+                if ((SDL_QUIT == event.type)
+                    || (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))
+                    running = 0;
+                if (SDL_MOUSEBUTTONDOWN == event.type)
+                    running = 2;
             }
+
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderClear(renderer);
+            SDL_RenderCopy(renderer, menu_image, NULL, NULL);
+            SDL_RenderPresent(renderer);
+            SDL_Delay(5);
+
         }
+        else if (running == 2) {
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+            while (SDL_PollEvent(&event)) {
+                if ((SDL_QUIT == event.type)
+                    || (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))
+                    running = 0;
+                if (SDL_MOUSEMOTION == event.type) {
+                    SDL_GetMouseState(&x, &y);
+                }
+            }
 
-        // RENDER
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderClear(renderer);
+            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 
-        SDL_Rect box = {x_c - (200 / 2), y_c - (200 / 2), 200, 200};
-        SDL_RenderFillRect(renderer, &box);
+            // RENDER
+            SDL_RenderCopy(renderer, bg, NULL, NULL);
+            SDL_Rect box = {x_c - (200 / 2), y_c - (200 / 2), 200, 200};
+            //SDL_RenderFillRect(renderer, &box);
+            SDL_RenderCopy(renderer, sh, NULL, &box);
+            SDL_Rect player_rect = {x - 50, y - 50, 100, 100};
+            SDL_Point p_c = {50, 50};
+            //SDL_RenderCopy(renderer, image, NULL, &player_rect);
+            if (flip == SDL_FLIP_NONE)
+                flip = SDL_FLIP_HORIZONTAL;
+            else
+                flip = SDL_FLIP_NONE;
 
-        SDL_Rect player_rect = {x - 50, y - 50, 100, 100};
-        SDL_RenderCopy(renderer, image, NULL, &player_rect);
+            SDL_RenderCopyEx(renderer, image, NULL, &player_rect, 0, &p_c, flip);
+            SDL_RenderPresent(renderer);
+            SDL_Delay(200);
 
-        SDL_RenderPresent(renderer);
-        SDL_Delay(5);
+        }
     }
 
     SDL_DestroyWindow(window);
