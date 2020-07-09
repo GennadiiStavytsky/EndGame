@@ -18,6 +18,7 @@
 #define MX_D_LEFT "res/images/left.png"
 #define MX_GAME_BACKGROUND "res/images/background.png"
 #define MX_MAGE "res/images/mage.png"
+#define MX_BULLET "res/images/bullet.png"
 
 typedef struct s_allimg {
     SDL_Texture *menu_image;
@@ -31,6 +32,7 @@ typedef struct s_allimg {
     SDL_Texture *left;
     SDL_Texture *bg;
     SDL_Texture *mage;
+    SDL_Texture *bullet_txd;
 }              t_allimg;
 
 typedef struct s_shild_inf {

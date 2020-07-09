@@ -29,6 +29,9 @@ int main(int argc, char* argv[]) {
     int x_c = 1024 / 2;
     int y_c = 768 / 2;
 
+    int bullet_x = 0;
+    int bullet_y = 0;
+
     // ----------- ALLOCATING MEMORY FOR STRUCT S_ALLIMG ---------
     t_allimg *allimg = (t_allimg *)malloc(sizeof(t_allimg));
 
@@ -43,6 +46,7 @@ int main(int argc, char* argv[]) {
     allimg->left = IMG_LoadTexture(renderer, MX_D_LEFT);
     allimg->bg = IMG_LoadTexture(renderer, MX_GAME_BACKGROUND);
     allimg->mage = IMG_LoadTexture(renderer, MX_MAGE);
+    allimg->bullet_txd = IMG_LoadTexture(renderer, MX_BULLET);
     // -------------------------------------------------------------
 
     // ----------- ALLOCATING MEMORY FOR STRUCT S_SHILD_INF ---------
@@ -108,6 +112,21 @@ int main(int argc, char* argv[]) {
 
             // SDL_RenderCopyEx(renderer, image, NULL, &player_rect, 0, &p_c, flip);
 
+            // --------------- BULLET --------------------
+            SDL_Rect bullet_rect = {bullet_x, bullet_y, 50, 50};
+            SDL_RenderCopyEx(
+                renderer,
+                allimg->bullet_txd,
+                NULL,
+                &bullet_rect,
+                12,
+                NULL,
+                SDL_FLIP_NONE
+            );
+            bullet_x += 2;
+            bullet_y += 3;
+            // --------------------------------------------
+
             mx_shild_dir(renderer, allimg, shild);
 
             SDL_RenderPresent(renderer);
@@ -127,6 +146,7 @@ int main(int argc, char* argv[]) {
     SDL_DestroyTexture(allimg->left);
     SDL_DestroyTexture(allimg->bg);
     SDL_DestroyTexture(allimg->mage);
+    SDL_DestroyTexture(allimg->bullet_txd);
     free(allimg);
     // --------------------------------------------------
 
