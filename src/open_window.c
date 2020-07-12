@@ -26,11 +26,16 @@ int main(int argc, char* argv[]) {
     SDL_Event event;
     int running = 1;
     t_bullets *hate=malloc(sizeof(t_bullets));
-    hate->created=false;
+    for (int i=0; i<8; i++) {
+        hate[i].created=false;
+        hate[i].size_x=1;
+        hate[i].size_y=1;
+    }
     int x_c = 1024 / 2;
     int y_c = 768 / 2;
     int d=0;
     int num;
+    float max_delay=100;
     // int bullet_x = 0;
     // int bullet_y = 0;
 
@@ -140,16 +145,19 @@ int main(int argc, char* argv[]) {
             printf("2\n");
 
                 hate[0].pos_x=5;
-                hate[0].pos_y=5;
-                hate[0].angle=25;
-                hate[0].speed_x=3;
+                hate[0].pos_y=5;  // стартовые позиции пуль (от первой до 8)
+                hate[0].angle=25;  // угол
+                hate[0].speed_x=3; // скорости и траэктории пуль  x- горизонт y- вертикаль
                 hate[0].speed_y=2;
                 hate[0].oper=true;
                 hate[0].oper2=true;
                 hate[0].created=true;
                 hate[0].position=1;
+                hate[0].size_x=50;
+                hate[0].size_y=30;
+                hate[0].reflected=false;
             printf("2 \n");
-                d=100;
+                d=max_delay-hate[0].dspeed;
                 break;
             case 2:
             printf("3\n");
@@ -162,8 +170,11 @@ int main(int argc, char* argv[]) {
                 hate[1].oper2=true;
                 hate[1].created=true;
                 hate[1].position=2;
+                hate[1].size_x=50;
+                hate[1].size_y=30;
+                hate[1].reflected=false;
             printf("3\n");
-                d=100;
+                d=max_delay-hate[0].dspeed;
                 break;
             case 3:
             printf("4\n");
@@ -176,8 +187,11 @@ int main(int argc, char* argv[]) {
                 hate[2].oper2=true;
                 hate[2].created=true;
                 hate[2].position=3;
+                hate[2].size_x=50;
+                hate[2].size_y=30;
+                hate[2].reflected=false;
             printf("4\n");
-                d=100;
+                d=max_delay-hate[0].dspeed;
                 break;
             case 4:
             printf("5\n");
@@ -190,8 +204,11 @@ int main(int argc, char* argv[]) {
                 hate[3].oper2=true;
                 hate[3].created=true;
                 hate[3].position=4;
+                hate[5].size_x=50;
+                hate[5].size_y=30;
+                hate[3].reflected=false;
             printf("5\n");
-                d=100;
+                d=max_delay-hate[0].dspeed;
                 break;
             case 5:
             printf("6\n");
@@ -204,8 +221,11 @@ int main(int argc, char* argv[]) {
                 hate[4].oper2=true;
                 hate[4].created=true;
                 hate[4].position=5;
+                hate[4].size_x=50;
+                hate[4].size_y=30;
+                hate[4].reflected=false;
             printf("6\n");
-                d=100;
+                d=max_delay-hate[0].dspeed;
                 break;
             case 6:
             printf("7\n");
@@ -218,8 +238,11 @@ int main(int argc, char* argv[]) {
                 hate[5].oper2=false;
                 hate[5].created=true;
                 hate[5].position=6;
+                hate[5].size_x=50;
+                hate[5].size_y=30;
+                hate[5].reflected=false;
             printf("7\n");
-                d=100;
+                d=max_delay-hate[0].dspeed;
                 break;
             case 7:
             printf("8\n");
@@ -232,8 +255,11 @@ int main(int argc, char* argv[]) {
                 hate[6].oper2=false;
                 hate[6].created=true;
                 hate[6].position=7;
+                hate[6].size_x=50;
+                hate[6].size_y=30;
+                hate[6].reflected=false;
             printf("8\n");
-                d=100;
+                d=max_delay-hate[0].dspeed;
                 break;
             case 8:
             printf("9\n");
@@ -246,8 +272,11 @@ int main(int argc, char* argv[]) {
                 hate[7].oper2=false;
                 hate[7].created=true;
                 hate[7].position=8;
+                hate[7].size_x=50;
+                hate[7].size_y=30;
+                hate[7].reflected=false;
             printf("9\n");
-                d=100;
+                d=max_delay-hate[0].dspeed;
                 break;    
             default: 
             break;

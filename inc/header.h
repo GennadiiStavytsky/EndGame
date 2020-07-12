@@ -49,6 +49,10 @@ struct s_bullets{
     bool created;
     int angle;  
     int position;
+    bool reflected;
+    int size_x;
+    int size_y;
+    float dspeed;
 };
 
 
@@ -65,6 +69,7 @@ typedef struct s_shild_inf {
 void mx_shild_dir(SDL_Renderer *renderer, t_allimg *allimg, t_shild_inf *sd);
 t_shild_inf *mx_alloc_shild(void);
 void mx_spawn_bullet(SDL_Renderer *renderer, t_allimg *allimg, t_bullets *h, t_shild_inf *b);
+// void mx_set_bullet(int num, t_bullets *hate);
 // void mx_alloc_bullet(t_bulletsList **list, t_bullets *data, int * f);
 // t_bulletsList *mx_create_node(t_bullets *data, int *g);
 // t_bullets *mx_create_node2(t_bullets *data2);
