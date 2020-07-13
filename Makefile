@@ -38,7 +38,8 @@ CFLAGS = -std=c11 $(addprefix -W, all extra error pedantic) -g \
 SDL_FLAGS = -rpath inc/framework -framework SDL2 \
 		-framework SDL2_image \
 		-I inc/framework/SDL2_image.framework/Headers \
-
+        -framework SDL2_mixer \
+        -I inc/framework/SDL2_mixer.framework/Headers \
 # архиватор для формирования библиотеки из о-файлов
 AR = ar
 

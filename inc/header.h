@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
+#include <SDL2_mixer/SDL_mixer.h>
 
 #define MX_MENU_IMAGE "res/images/menu_image.png"
 #define MX_D_UP "res/images/up.png"
@@ -17,6 +18,8 @@
 #define MX_D_RIGHT "res/images/right.png"
 #define MX_D_LEFT "res/images/left.png"
 #define MX_GAME_BACKGROUND "res/images/background.png"
+#define MX_GAME_BACKGROUND1 "res/images/background1.png"
+#define MX_GROUND "res/images/ground.png"
 #define MX_MAGE "res/images/mage.png"
 #define MX_BULLET "res/images/bullets.png"
 
@@ -31,6 +34,8 @@ typedef struct s_allimg {
     SDL_Texture *right;
     SDL_Texture *left;
     SDL_Texture *bg;
+    SDL_Texture *bg1;
+    SDL_Texture *gr;
     SDL_Texture *mage;
     SDL_Texture *bullet_txd;
 }              t_allimg;
@@ -64,6 +69,7 @@ typedef struct s_shild_inf {
     SDL_Rect shield_rectR;
     SDL_Rect shield_rect;
     SDL_Rect shield_rectL;
+    SDL_Rect player_platform;
 }              t_shild_inf;
 
 void mx_shild_dir(SDL_Renderer *renderer, t_allimg *allimg, t_shild_inf *sd);
