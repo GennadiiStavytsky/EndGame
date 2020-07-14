@@ -10,7 +10,16 @@ int main(int argc, char* argv[]) {
 
     SDL_Init(SDL_INIT_EVERYTHING);
     IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+    
+    // Initialize SDL video and audio systems
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
+    // Initialize SDL mixer
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+
+    // Load audio files
+    Mix_Music *backgroundSound = Mix_LoadMUS("res/Sound/backgroundSound.mp3");
+  
     SDL_Window *window = SDL_CreateWindow(
         "Our Game !",
         SDL_WINDOWPOS_UNDEFINED,
@@ -52,6 +61,8 @@ int main(int argc, char* argv[]) {
     allimg->right = IMG_LoadTexture(renderer, MX_D_RIGHT);
     allimg->left = IMG_LoadTexture(renderer, MX_D_LEFT);
     allimg->bg = IMG_LoadTexture(renderer, MX_GAME_BACKGROUND);
+    allimg->bg1 = IMG_LoadTexture(renderer, MX_GAME_BACKGROUND1);
+    allimg->gr = IMG_LoadTexture(renderer, MX_GROUND);
     allimg->mage = IMG_LoadTexture(renderer, MX_MAGE);
     allimg->bullet_txd = IMG_LoadTexture(renderer, MX_BULLET);
     allimg->title = IMG_LoadTexture(renderer, MX_TITLE);
@@ -62,7 +73,10 @@ int main(int argc, char* argv[]) {
     // SDL_Texture *sh = IMG_LoadTexture(renderer, "shilde.png");
 
     // SDL_RendererFlip flip = SDL_FLIP_NONE;
-
+    
+    // Start the background music
+    Mix_PlayMusic(backgroundSound, -1);
+    
     while (running) {
 
         if (running == 1) {
@@ -101,6 +115,8 @@ int main(int argc, char* argv[]) {
 
             // RENDER
             SDL_RenderCopy(renderer, allimg->bg, NULL, NULL);
+            SDL_RenderCopy(renderer, allimg->bg1, NULL, NULL);
+            
 
             // SDL_Rect box = {x_c - (200 / 2), y_c - (200 / 2), 200, 200};
             // SDL_RenderFillRect(renderer, &box);
@@ -111,6 +127,7 @@ int main(int argc, char* argv[]) {
             shild->shield_rectR = (SDL_Rect){x_c-(50/2), y_c+25, 80, 80};
             shild->shield_rect = (SDL_Rect){x_c-(100/2), y_c+45, 90, 80};
             shild->shield_rectL = (SDL_Rect){x_c-(180/2), y_c+25, 80, 80};
+            shild->player_platform = (SDL_Rect){x_c-(200/2), y_c-(220/2), 200, 200};
             // ----------------------------------------------------------------
 
             // SDL_Point p_c = {50, 50};
@@ -294,10 +311,12 @@ int main(int argc, char* argv[]) {
             
             mx_spawn_bullet(renderer, allimg, hate, shild); 
             // bulletsList=bulletsList->t_bullets_next; }
+            SDL_RenderCopy(renderer, allimg->gr, NULL, &shild->player_platform);
             mx_shild_dir(renderer, allimg, shild);
             d-=1;
-            SDL_RenderPresent(renderer);
             
+            SDL_RenderPresent(renderer);
+           
             SDL_Delay(5);
         }
         
@@ -306,7 +325,7 @@ int main(int argc, char* argv[]) {
     // Corrupt value: 0xf00007fc00000001
     // endgame(50356,0x110e385c0) malloc: *** set a breakpoint in malloc_error_break to debug
     // ---------- FREE STRUCT S_ALLIMG ------------------
-    SDL_DestroyTexture(allimg->menu_image);
+   SDL_DestroyTexture(allimg->menu_image);
     SDL_DestroyTexture(allimg->image);
     SDL_DestroyTexture(allimg->topleft);
     SDL_DestroyTexture(allimg->topright);
@@ -316,6 +335,8 @@ int main(int argc, char* argv[]) {
     SDL_DestroyTexture(allimg->right);
     SDL_DestroyTexture(allimg->left);
     SDL_DestroyTexture(allimg->bg);
+    SDL_DestroyTexture(allimg->bg1);
+    SDL_DestroyTexture(allimg->gr);
     SDL_DestroyTexture(allimg->mage);
     SDL_DestroyTexture(allimg->bullet_txd);
     SDL_DestroyTexture(allimg->title);
@@ -328,7 +349,8 @@ int main(int argc, char* argv[]) {
     // --------------------------------------------------
 
     SDL_DestroyWindow(window);
-
+    Mix_CloseAudio();
+    Mix_FreeMusic(backgroundSound);
     IMG_Quit();
     SDL_Quit();
 
