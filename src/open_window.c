@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 
     SDL_Event event;
     int running = 1;
-    t_bullets *hate=malloc(sizeof(t_bullets));
+    t_bullets *hate=(t_bullets *)malloc(sizeof(t_bullets));
     for (int i=0; i<8; i++) {
         hate[i].created=false;
         hate[i].size_x=1;
@@ -54,6 +54,7 @@ int main(int argc, char* argv[]) {
     allimg->bg = IMG_LoadTexture(renderer, MX_GAME_BACKGROUND);
     allimg->mage = IMG_LoadTexture(renderer, MX_MAGE);
     allimg->bullet_txd = IMG_LoadTexture(renderer, MX_BULLET);
+    allimg->title = IMG_LoadTexture(renderer, MX_TITLE);
     // -------------------------------------------------------------
     // ----------- ALLOCATING MEMORY FOR STRUCT S_SHILD_INF ---------
     t_shild_inf *shild = mx_alloc_shild();
@@ -77,6 +78,8 @@ int main(int argc, char* argv[]) {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
             SDL_RenderCopy(renderer, allimg->menu_image, NULL, NULL);
+            allimg->title_rect= (SDL_Rect){x_c-150, y_c-300,300, 300};
+            SDL_RenderCopy(renderer, allimg->title, NULL, &allimg->title_rect);
             SDL_RenderPresent(renderer);
             SDL_Delay(5);
 
@@ -298,8 +301,10 @@ int main(int argc, char* argv[]) {
             SDL_Delay(5);
         }
         
-    }
-   
+        }
+    //endgame(50356,0x110e385c0) malloc: Incorrect checksum for freed object 0x7fc830d34aa8: probably modified after being freed.
+    // Corrupt value: 0xf00007fc00000001
+    // endgame(50356,0x110e385c0) malloc: *** set a breakpoint in malloc_error_break to debug
     // ---------- FREE STRUCT S_ALLIMG ------------------
     SDL_DestroyTexture(allimg->menu_image);
     SDL_DestroyTexture(allimg->image);
@@ -313,11 +318,13 @@ int main(int argc, char* argv[]) {
     SDL_DestroyTexture(allimg->bg);
     SDL_DestroyTexture(allimg->mage);
     SDL_DestroyTexture(allimg->bullet_txd);
+    SDL_DestroyTexture(allimg->title);
     free(allimg);
     // --------------------------------------------------
 
     // ---------- FREE STRUCT S_SHILD_INF ---------------
     free(shild);
+    free(hate);
     // --------------------------------------------------
 
     SDL_DestroyWindow(window);
