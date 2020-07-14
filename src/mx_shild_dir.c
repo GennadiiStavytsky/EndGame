@@ -7,7 +7,7 @@ void mx_shild_dir(SDL_Renderer *renderer, t_allimg *allimg, t_shild_inf *sd) {
             sd->position=1;
             
         }
-        else if (sd->y > 396 && sd->y < 442){
+        else if (sd->y > 396 && sd->y < 432){
             SDL_RenderCopy(renderer, allimg->left, NULL, &(sd->player_rect));
             sd->position=4;
             
