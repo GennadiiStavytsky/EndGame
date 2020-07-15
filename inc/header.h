@@ -4,28 +4,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 #include <SDL2_mixer/SDL_mixer.h>
 #include <SDL2_ttf/SDL_ttf.h>
 
-#define MX_MENU_IMAGE "res/images/menu_image.png"
-#define MX_D_UP "res/images/up.png"
-#define MX_D_TOPLEFT "res/images/topleft.png"
-#define MX_D_TOPRIGHT "res/images/topright.png"
-#define MX_D_DOWNLEFT "res/images/downleft.png"
-#define MX_D_DOWNRIGHT "res/images/downright.png"
-#define MX_D_DOWN "res/images/down.png"
-#define MX_D_RIGHT "res/images/right.png"
-#define MX_D_LEFT "res/images/left.png"
-#define MX_GAME_BACKGROUND "res/images/background.png"
-#define MX_GAME_BACKGROUND1 "res/images/background1.png"
-#define MX_GROUND "res/images/ground.png"
-#define MX_MAGE "res/images/mage.png"
-#define MX_BULLET "res/images/bullets.png"
-#define MX_TITLE "res/images/title.png"
-#define MX_HEART "res/images/heart.png"
-#define MX_FONT "res/fonts/ml-90.ttf"
+#define MX_MENU_IMAGE "resource/images/menu_image.png"
+#define MX_D_UP "resource/images/up.png"
+#define MX_D_TOPLEFT "resource/images/topleft.png"
+#define MX_D_TOPRIGHT "resource/images/topright.png"
+#define MX_D_DOWNLEFT "resource/images/downleft.png"
+#define MX_D_DOWNRIGHT "resource/images/downright.png"
+#define MX_D_DOWN "resource/images/down.png"
+#define MX_D_RIGHT "resource/images/right.png"
+#define MX_D_LEFT "resource/images/left.png"
+#define MX_GAME_BACKGROUND "resource/images/background.png"
+#define MX_GAME_BACKGROUND1 "resource/images/background1.png"
+#define MX_GROUND "resource/images/ground.png"
+#define MX_MAGE "resource/images/mage.png"
+#define MX_BULLET "resource/images/bullets.png"
+#define MX_TITLE "resource/images/title.png"
+#define MX_HEART "resource/images/heart.png"
+#define MX_FONT "resource/fonts/ml-90.ttf"
 
 typedef struct s_allimg {
     SDL_Texture *menu_image;
@@ -65,6 +66,8 @@ struct s_bullets{
     int size_x;
     int size_y;
     float dspeed;
+    Mix_Chunk *ref_sound;
+    Mix_Chunk *hit_sound;
     bool hit;
 };
 
@@ -79,7 +82,7 @@ typedef struct s_shild_inf {
     SDL_Rect shield_rectL;
     SDL_Rect player_platform;
     int hp;
-    int hp1;
+    // int hp1;
     int score;
 }              t_shild_inf;
 
@@ -87,6 +90,9 @@ int mx_intlen(int var);
 void mx_shild_dir(SDL_Renderer *renderer, t_allimg *allimg, t_shild_inf *sd);
 t_shild_inf *mx_alloc_shild(void);
 void mx_spawn_bullet(SDL_Renderer *renderer, t_allimg *allimg, t_bullets *h, t_shild_inf *b);
+void mx_switch(int n, t_bullets *bul, int *del, float max_del);
+void mx_destroyimg(t_allimg *allimg);
+void mx_allocimg(SDL_Renderer *renderer, t_allimg *allimg);
 // void mx_set_bullet(int num, t_bullets *hate);
 // void mx_alloc_bullet(t_bulletsList **list, t_bullets *data, int * f);
 // t_bulletsList *mx_create_node(t_bullets *data, int *g);

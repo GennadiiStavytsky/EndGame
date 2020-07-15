@@ -5,8 +5,8 @@ t_shild_inf *mx_alloc_shild(void) {
 
     shild->x = 500;
     shild->y = 500;
-    shild->hp = 3;
-    shild->hp1 = 3;
+    shild->hp = 5;
+    // shild->hp1 = 3;
     shild->score = 0;
     return shild;
 }

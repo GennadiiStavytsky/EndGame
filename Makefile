@@ -10,9 +10,9 @@ OBJ_DIR = obj
 # папка с хедерами
 INC_DIR = inc
 
-SDL = -F inc/framework -I inc/framework/SDL2.framework/SDL2 \
-		-I inc/framework/SDL2_image.framework/SDL2_image \
-		-I inc/framework/SDL2_ttf.framework/SDL2_ttf \
+SDL = -F resource/framework -I resource/framework/SDL2.framework/SDL2 \
+		-I resource/framework/SDL2_image.framework/SDL2_image \
+		-I resource/framework/SDL2_ttf.framework/SDL2_ttf \
 
 # сделать список всех файлов в папке src, которые имеют расширение .с
 # формат каждой записи src/<file_name>.c
@@ -37,13 +37,13 @@ CC = clang
 # запятой)
 CFLAGS = -std=c11 $(addprefix -W, all extra error pedantic) -g \
 
-SDL_FLAGS = -rpath inc/framework -framework SDL2 \
+SDL_FLAGS = -rpath resource/framework -framework SDL2 \
 		-framework SDL2_image \
-		-I inc/framework/SDL2_image.framework/Headers \
+		-I resource/framework/SDL2_image.framework/Headers \
         -framework SDL2_mixer \
-        -I inc/framework/SDL2_mixer.framework/Headers \
+        -I resource/framework/SDL2_mixer.framework/Headers \
         -framework SDL2_ttf \
-        -I inc/framework/SDL2_ttf.framework/Headers \
+        -I resource/framework/SDL2_ttf.framework/Headers \
 # архиватор для формирования библиотеки из о-файлов
 AR = ar
 
