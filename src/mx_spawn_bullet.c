@@ -20,20 +20,32 @@ void mx_spawn_bullet(SDL_Renderer *renderer, t_allimg *allimg, t_bullets *h, t_s
             h[i].oper=!h[i].oper;
             h[i].oper2=!h[i].oper2;
             h[i].reflected=true;
+            if (h[i].hit!=true){
             Mix_PlayChannel(-1,h[0].ref_sound,0);
+            }
             if (h[i].angle>180){
                 h[i].angle-=180;
             }
             else if (h[i].angle<=180){
                 h[i].angle+=180;
             }
-            if (h[0].dspeed<55){
+            if (h[0].dspeed<20){
             h[0].dspeed+=0.5;}
         }
-        else if (h[i].pos_x> 412 && h[i].pos_x< 562 && h[i].pos_y>  304 && h[i].pos_y< 450 && b->position!=h[i].position){
+        else if (h[i].pos_x> 412 && h[i].pos_x< 562 && h[i].pos_y>  304 && h[i].pos_y< 450 && b->position!=h[i].position && h[i].hit == false){
             h[i].created=false;
             h[i].speed_x=0;
             h[i].speed_y=0;
+            Mix_PlayChannel(-1,h[0].hit_sound,0);
+            printf("-hp\n");
+            b->hp -= 1;
+            // if (b->hp1 == 0) {
+            //     b->hp -= 1;
+            //     b->hp1 = 3;
+            // }
+            h[i].hit = true; 
+            h[i].size_x=1;
+            h[i].size_y=1;
         }
         else{
         SDL_Rect br = {h[i].pos_x, h[i].pos_y, h[i].size_x, h[i].size_y};
