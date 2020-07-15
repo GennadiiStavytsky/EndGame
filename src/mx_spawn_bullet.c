@@ -22,9 +22,9 @@ void mx_spawn_bullet(SDL_Renderer *renderer, t_allimg *allimg, t_bullets *h, t_s
             h[i].oper2=!h[i].oper2;
             h[i].reflected=true;
             b->score+=100;
-            printf("%s","Your score is: ");
-            printf("%d",b->score);
-            printf("%s","\n");
+            // printf("%s","Your score is: ");
+            // printf("%d",b->score);
+            // printf("%s","\n");
             Mix_PlayChannel(-1,h[0].ref_sound,0);
             }
             if (h[i].angle>180){
@@ -41,7 +41,7 @@ void mx_spawn_bullet(SDL_Renderer *renderer, t_allimg *allimg, t_bullets *h, t_s
             h[i].speed_x=0;
             h[i].speed_y=0;
             Mix_PlayChannel(-1,h[0].hit_sound,0);
-            printf("-hp\n");
+            // printf("-hp\n");
             b->hp -= 1;
             // if (b->hp1 == 0) {
             //     b->hp -= 1;
