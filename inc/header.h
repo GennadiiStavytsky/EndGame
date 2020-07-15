@@ -7,6 +7,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 #include <SDL2_mixer/SDL_mixer.h>
+#include <SDL2_ttf/SDL_ttf.h>
 
 #define MX_MENU_IMAGE "res/images/menu_image.png"
 #define MX_D_UP "res/images/up.png"
@@ -23,6 +24,8 @@
 #define MX_MAGE "res/images/mage.png"
 #define MX_BULLET "res/images/bullets.png"
 #define MX_TITLE "res/images/title.png"
+#define MX_HEART "res/images/heart.png"
+#define MX_FONT "res/fonts/ml-90.ttf"
 
 typedef struct s_allimg {
     SDL_Texture *menu_image;
@@ -41,6 +44,7 @@ typedef struct s_allimg {
     SDL_Texture *bullet_txd;
     SDL_Texture *title;
     SDL_Rect title_rect;
+    SDL_Texture *heart;
 }              t_allimg;
 
 
@@ -61,6 +65,7 @@ struct s_bullets{
     int size_x;
     int size_y;
     float dspeed;
+    bool hit;
 };
 
 
@@ -73,8 +78,12 @@ typedef struct s_shild_inf {
     SDL_Rect shield_rect;
     SDL_Rect shield_rectL;
     SDL_Rect player_platform;
+    int hp;
+    int hp1;
+    int score;
 }              t_shild_inf;
 
+int mx_intlen(int var);
 void mx_shild_dir(SDL_Renderer *renderer, t_allimg *allimg, t_shild_inf *sd);
 t_shild_inf *mx_alloc_shild(void);
 void mx_spawn_bullet(SDL_Renderer *renderer, t_allimg *allimg, t_bullets *h, t_shild_inf *b);

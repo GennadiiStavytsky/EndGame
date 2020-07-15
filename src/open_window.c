@@ -10,6 +10,7 @@ int main(int argc, char* argv[]) {
 
     SDL_Init(SDL_INIT_EVERYTHING);
     IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+    TTF_Init();
     
     // Initialize SDL video and audio systems
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
@@ -29,16 +30,19 @@ int main(int argc, char* argv[]) {
         SDL_WINDOW_POPUP_MENU
     );
 
+    if (!window)
+        exit(1);
+
     SDL_Renderer *renderer = SDL_CreateRenderer(window, 0,
                                                 SDL_RENDERER_ACCELERATED);
 
-    SDL_Event event;
     int running = 1;
     t_bullets *hate=(t_bullets *)malloc(sizeof(t_bullets));
     for (int i=0; i<8; i++) {
         hate[i].created=false;
         hate[i].size_x=1;
         hate[i].size_y=1;
+        hate[i].hit = false;
     }
     int x_c = 1024 / 2;
     int y_c = 768 / 2;
@@ -47,6 +51,7 @@ int main(int argc, char* argv[]) {
     float max_delay=100;
     // int bullet_x = 0;
     // int bullet_y = 0;
+
 
     // ----------- ALLOCATING MEMORY FOR STRUCT S_ALLIMG ---------
     t_allimg *allimg = (t_allimg *)malloc(sizeof(t_allimg));
@@ -66,9 +71,21 @@ int main(int argc, char* argv[]) {
     allimg->mage = IMG_LoadTexture(renderer, MX_MAGE);
     allimg->bullet_txd = IMG_LoadTexture(renderer, MX_BULLET);
     allimg->title = IMG_LoadTexture(renderer, MX_TITLE);
+    allimg->heart = IMG_LoadTexture(renderer, MX_HEART);
     // -------------------------------------------------------------
     // ----------- ALLOCATING MEMORY FOR STRUCT S_SHILD_INF ---------
     t_shild_inf *shild = mx_alloc_shild();
+
+    // FONTS
+    // ------------------ NOT FINISHED ------------------
+    // char num_buf[20];
+    // SDL_Color text_color = {255, 255, 255, 255};
+    // TTF_Font *font = TTF_OpenFont(MX_FONT, 30);
+    // snprintf(num_buf, mx_intlen(shild->score), "%d", shild->score);
+    // SDL_Surface *score_surf = TTF_RenderText_Solid(font, num_buf, text_color);
+    // SDL_Texture *score_text = SDL_CreateTextureFromSurface(renderer, score_surf);
+    // (void)score_text;
+    // --------------------------------------------------
 
     // SDL_Texture *sh = IMG_LoadTexture(renderer, "shilde.png");
 
@@ -76,10 +93,15 @@ int main(int argc, char* argv[]) {
     
     // Start the background music
     Mix_PlayMusic(backgroundSound, -1);
+
     
     while (running) {
+        SDL_Event event;
 
         if (running == 1) {
+            shild->hp = 3;
+            shild->hp1 = 3;
+            shild->score = 0;
 
             while (SDL_PollEvent(&event)) {
                 if ((SDL_QUIT == event.type)
@@ -109,7 +131,6 @@ int main(int argc, char* argv[]) {
             }
             
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_Delay(10);
             SDL_RenderClear(renderer);
             SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 
@@ -176,6 +197,7 @@ int main(int argc, char* argv[]) {
                 hate[0].size_x=50;
                 hate[0].size_y=30;
                 hate[0].reflected=false;
+                hate[0].hit=false;
             printf("2 \n");
                 d=max_delay-hate[0].dspeed;
                 break;
@@ -193,6 +215,7 @@ int main(int argc, char* argv[]) {
                 hate[1].size_x=50;
                 hate[1].size_y=30;
                 hate[1].reflected=false;
+                hate[1].hit=false;
             printf("3\n");
                 d=max_delay-hate[0].dspeed;
                 break;
@@ -210,6 +233,7 @@ int main(int argc, char* argv[]) {
                 hate[2].size_x=50;
                 hate[2].size_y=30;
                 hate[2].reflected=false;
+                hate[2].hit=false;
             printf("4\n");
                 d=max_delay-hate[0].dspeed;
                 break;
@@ -224,9 +248,11 @@ int main(int argc, char* argv[]) {
                 hate[3].oper2=true;
                 hate[3].created=true;
                 hate[3].position=4;
-                hate[5].size_x=50;
-                hate[5].size_y=30;
+                hate[3].size_x=50;
+                hate[3].size_y=30;
                 hate[3].reflected=false;
+                hate[3].hit=false;
+
             printf("5\n");
                 d=max_delay-hate[0].dspeed;
                 break;
@@ -244,6 +270,7 @@ int main(int argc, char* argv[]) {
                 hate[4].size_x=50;
                 hate[4].size_y=30;
                 hate[4].reflected=false;
+                hate[4].hit=false;
             printf("6\n");
                 d=max_delay-hate[0].dspeed;
                 break;
@@ -261,6 +288,7 @@ int main(int argc, char* argv[]) {
                 hate[5].size_x=50;
                 hate[5].size_y=30;
                 hate[5].reflected=false;
+                hate[5].hit=false;
             printf("7\n");
                 d=max_delay-hate[0].dspeed;
                 break;
@@ -278,6 +306,7 @@ int main(int argc, char* argv[]) {
                 hate[6].size_x=50;
                 hate[6].size_y=30;
                 hate[6].reflected=false;
+                hate[6].hit=false;
             printf("8\n");
                 d=max_delay-hate[0].dspeed;
                 break;
@@ -295,6 +324,7 @@ int main(int argc, char* argv[]) {
                 hate[7].size_x=50;
                 hate[7].size_y=30;
                 hate[7].reflected=false;
+                hate[7].hit=false;
             printf("9\n");
                 d=max_delay-hate[0].dspeed;
                 break;    
@@ -308,8 +338,30 @@ int main(int argc, char* argv[]) {
             // bullet_y += 2;
             // --------------------------------------------
             
-            
+
             mx_spawn_bullet(renderer, allimg, hate, shild); 
+
+            // GAME OVER CASE
+            if (shild->hp == 0) {
+                running = 1;
+            }
+            // HEARTS RENDER
+            for (int i = 0; i < shild->hp; i++) {
+                SDL_Rect heartsrect = {10 + (i * 30), 10, 30, 30};
+                SDL_RenderCopy(renderer, allimg->heart, NULL, &heartsrect);
+            }
+
+            // SCORE RENDER
+             // ------------------ NOT FINISHED ------------------
+            // SDL_Rect score_rect = {512, 10, /*mx_intlen(shild->score) **/ 30, 30};
+            // snprintf(num_buf, mx_intlen(shild->score), "%d", shild->score);
+            // score_surf = TTF_RenderText_Solid(font, num_buf, text_color);
+            // score_text = SDL_CreateTextureFromSurface(renderer, score_surf);
+            // SDL_FreeSurface(score_surf);
+            // SDL_DestroyTexture(score_text);
+            // SDL_RenderCopy(renderer, score_text, NULL, &score_rect);
+            // ----------------------------------------------------
+
             // bulletsList=bulletsList->t_bullets_next; }
             SDL_RenderCopy(renderer, allimg->gr, NULL, &shild->player_platform);
             mx_shild_dir(renderer, allimg, shild);
@@ -317,7 +369,7 @@ int main(int argc, char* argv[]) {
             
             SDL_RenderPresent(renderer);
            
-            SDL_Delay(5);
+            SDL_Delay(10);
         }
         
         }
@@ -340,6 +392,7 @@ int main(int argc, char* argv[]) {
     SDL_DestroyTexture(allimg->mage);
     SDL_DestroyTexture(allimg->bullet_txd);
     SDL_DestroyTexture(allimg->title);
+    SDL_DestroyTexture(allimg->heart);
     free(allimg);
     // --------------------------------------------------
 
@@ -348,10 +401,15 @@ int main(int argc, char* argv[]) {
     free(hate);
     // --------------------------------------------------
 
+    // FREE TTF
+    // SDL_DestroyTexture(score_text);
+    // SDL_FreeSurface(score_surf);
+
     SDL_DestroyWindow(window);
     Mix_CloseAudio();
     Mix_FreeMusic(backgroundSound);
     IMG_Quit();
+    TTF_Quit();
     SDL_Quit();
 
     return 0;

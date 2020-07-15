@@ -28,10 +28,17 @@ void mx_spawn_bullet(SDL_Renderer *renderer, t_allimg *allimg, t_bullets *h, t_s
             if (h[0].dspeed<55){
             h[0].dspeed+=0.5;}
         }
-        else if (h[i].pos_x> 412 && h[i].pos_x< 562 && h[i].pos_y>  304 && h[i].pos_y< 450 && b->position!=h[i].position){
+        else if (h[i].pos_x> 412 && h[i].pos_x< 562 && h[i].pos_y>  304 && h[i].pos_y< 450 && b->position!=h[i].position && h[i].hit == false){
             h[i].created=false;
             h[i].speed_x=0;
             h[i].speed_y=0;
+            printf("-hp\n");
+            b->hp1 -= 1;
+            if (b->hp1 == 0) {
+                b->hp -= 1;
+                b->hp1 = 3;
+            }
+            h[i].hit = true; 
         }
         else{
         SDL_Rect br = {h[i].pos_x, h[i].pos_y, h[i].size_x, h[i].size_y};
