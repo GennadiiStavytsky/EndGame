@@ -2,24 +2,24 @@
 
 void mx_shild_dir(SDL_Renderer *renderer, t_allimg *allimg, t_shild_inf *sd) {
     if (sd->x <= 481) {
-        if (sd->y <= 396) {
+        if (sd->y <= 380) {
             SDL_RenderCopy(renderer, allimg->topleft, NULL, &(sd->player_rect));
             sd->position=1;
             
         }
-        else if (sd->y > 396 && sd->y < 442){
+        else if (sd->y > 380 && sd->y < 442){
             SDL_RenderCopy(renderer, allimg->left, NULL, &(sd->player_rect));
             sd->position=4;
             
         } 
-        else if (sd->y > 396) {
+        else if (sd->y > 380) {
             SDL_RenderCopy(renderer, allimg->mage, NULL, &(sd->player_rect));
             SDL_RenderCopy(renderer, allimg->downleft, NULL, &(sd->shield_rectL));
             sd->position=6;
         }
     }
     else if (sd->x > 481 && sd->x < 593) {
-        if (sd->y <= 396) {
+        if (sd->y <= 380) {
             SDL_RenderCopy(renderer, allimg->image, NULL, &(sd->player_rect));
             sd->position=2;
         }
@@ -33,11 +33,11 @@ void mx_shild_dir(SDL_Renderer *renderer, t_allimg *allimg, t_shild_inf *sd) {
         }
     }
     else if (sd->x >= 593) {
-        if (sd->y <= 396) {
+        if (sd->y <= 380) {
             SDL_RenderCopy(renderer, allimg->topright, NULL, &(sd->player_rect));
             sd->position=3;
         }
-        else if (sd->y > 396 && sd->y < 442) {
+        else if (sd->y > 380 && sd->y < 442) {
             SDL_RenderCopy(renderer, allimg->right, NULL, &(sd->player_rect));
             sd->position=5;
         } 
