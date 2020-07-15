@@ -1,10 +1,11 @@
+#include <unistd.h>
 // Example program:
 // Using SDL2 to create an application window
 
 #include "../inc/header.h"
 
 int main(int argc, char* argv[]) {
-
+    write(1, "TI TUT?\n", 9);
     (void)argc;
     (void)argv;
 
@@ -16,7 +17,6 @@ int main(int argc, char* argv[]) {
 
     // Initialize SDL mixer
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-
     // Load audio files
     Mix_Music *backgroundSound = Mix_LoadMUS("res/Sound/backgroundSound.mp3");
   
@@ -31,10 +31,11 @@ int main(int argc, char* argv[]) {
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, 0,
                                                 SDL_RENDERER_ACCELERATED);
-
+    
     SDL_Event event;
     int running = 1;
     t_bullets *hate=(t_bullets *)malloc(sizeof(t_bullets));
+    hate[0].ref_sound=Mix_LoadWAV("res/Sound/fireball.wav");
     for (int i=0; i<8; i++) {
         hate[i].created=false;
         hate[i].size_x=1;
@@ -50,7 +51,7 @@ int main(int argc, char* argv[]) {
 
     // ----------- ALLOCATING MEMORY FOR STRUCT S_ALLIMG ---------
     t_allimg *allimg = (t_allimg *)malloc(sizeof(t_allimg));
-
+    
     allimg->menu_image = IMG_LoadTexture(renderer, MX_MENU_IMAGE);
     allimg->image = IMG_LoadTexture(renderer, MX_D_UP);
     allimg->topleft = IMG_LoadTexture(renderer, MX_D_TOPLEFT);
@@ -76,19 +77,21 @@ int main(int argc, char* argv[]) {
     
     // Start the background music
     Mix_PlayMusic(backgroundSound, -1);
-    
+   
     while (running) {
 
         if (running == 1) {
-
+           
             while (SDL_PollEvent(&event)) {
                 if ((SDL_QUIT == event.type)
                     || (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))
+                    
                     running = 0;
                 if (SDL_MOUSEBUTTONDOWN == event.type)
+                    
                     running = 2;
             }
-
+            
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
             SDL_RenderCopy(renderer, allimg->menu_image, NULL, NULL);
@@ -96,7 +99,7 @@ int main(int argc, char* argv[]) {
             SDL_RenderCopy(renderer, allimg->title, NULL, &allimg->title_rect);
             SDL_RenderPresent(renderer);
             SDL_Delay(5);
-
+    
         }
         else if (running == 2) {
             while (SDL_PollEvent(&event)) {

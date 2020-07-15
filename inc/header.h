@@ -61,6 +61,7 @@ struct s_bullets{
     int size_x;
     int size_y;
     float dspeed;
+    Mix_Chunk *ref_sound;
 };
 
 

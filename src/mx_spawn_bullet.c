@@ -1,6 +1,7 @@
 #include "../inc/header.h"
 
 void mx_spawn_bullet(SDL_Renderer *renderer, t_allimg *allimg, t_bullets *h, t_shild_inf *b){
+    
     for (int i=0; i<8; i++) {
         if (h[i].reflected && h[i].size_x>0 && h[i].size_y>0){
             h[i].size_x-=1;
@@ -19,6 +20,7 @@ void mx_spawn_bullet(SDL_Renderer *renderer, t_allimg *allimg, t_bullets *h, t_s
             h[i].oper=!h[i].oper;
             h[i].oper2=!h[i].oper2;
             h[i].reflected=true;
+            Mix_PlayChannel(-1,h[0].ref_sound,0);
             if (h[i].angle>180){
                 h[i].angle-=180;
             }
